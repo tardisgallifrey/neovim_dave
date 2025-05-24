@@ -1,5 +1,25 @@
 #!/bin/bash
 
+# check for correct command line args
+# first three required, last is optional
+# but must be a directory
+if [ $# -lt 3 ]; then
+    echo "Usage: "
+    echo "   (required) "
+    echo "   create-maven-project nameOfProject domainName COM "
+    echo " where: COM = Domain ending or TLD, such as COM, NET, etc. "
+    echo " A project folder of nameOfProject will be created in "
+    echo " current folder. "
+    exit 1
+fi
+
+if ! [ -d "$4" ]; then 
+    echo "Usage: "
+    echo "If a folder is in the fourth position, "
+    echo "it must be a folder name that exists,  "
+fi
+
+
 cd ~/$4
 mvn archetype:generate -DgroupId=$3.$2 -DartifactId=$1 -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5 -DinteractiveMode=false -DjavaCompilerVersion=21
 
