@@ -1,0 +1,91 @@
+#!/bin/bash
+
+cd ~/$4
+mvn archetype:generate -DgroupId=$3.$2 -DartifactId=$1 -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5 -DinteractiveMode=false -DjavaCompilerVersion=21
+
+sleep 3
+
+# Tell everyone what we are doing
+echo "  Now, correcting pom.xml file .... "
+
+cd ~/$4/$1
+
+# set for Java 21 compile
+awk '
+
+BEGIN { myfind = "<properties>" }
+{
+    if( $1 == myfind ) {
+        print
+        print "    <maven.compiler.source>21</maven.compiler.source>"
+        print "    <maven.compiler.target>21</maven.compiler.target>"
+        getline
+        getline
+    }else{
+       print
+       }
+}
+' pom.xml > output.xml
+
+
+# add JAR plugin using awk
+awk '
+
+BEGIN { inserted = 0
+         myfind = "</plugin>" }
+{
+    if( inserted < 1 && $1 == myfind ) {
+        print
+        print "      <!-- executable jar dependency plugin from StackOverflow -->"
+        print "      <!-- https://stackoverflow.com/questions/574594/how-can-i-create-an-e -->"
+        print "      <!-- run with mvn clean compile assembly:single -->"
+        print "      <plugin>"
+        print "         <artifactId>maven-assembly-plugin</artifactId>"
+        print "         <configuration>"
+        print "            <archive>"
+        print "            <!-- with this setting, META-INF and MANIFEST.MF -->"
+        print "            <!-- file is not needed -->"
+        print "               <manifest>"
+        print "                  <mainClass>${project.groupId}.${project.artifactId}.Main</mainClass>"
+        print "               </manifest>"
+        print "            </archive>"
+        print "            <descriptorRefs>"
+        print "               <descriptorRef>jar-with-dependencies</descriptorRef>"
+        print "            </descriptorRefs>"
+        print "            <appendAssemblyId>false</appendAssemblyId>"
+        print "         </configuration>"
+        print "      </plugin>"
+        inserted = 1
+    } else {
+        print
+    }     
+}
+' output.xml > pom.xml
+
+rm output.xml
+
+# Correcting folder and Main.java
+rm src/main/java/$3/$2/App.java
+rm src/test/java/$3/$2/*
+
+mkdir src/main/java/$3/$2/$1
+
+cd src/main/java/$3/$2/$1
+
+echo "package $3.$2.$1;                             ">>Main.java
+echo "                                              ">>Main.java
+echo "   // Sample Java Main method                 ">>Main.java
+echo "                                              ">>Main.java
+echo "public class Main                               ">>Main.java
+echo "{                                             ">>Main.java
+echo "    public static void main(String [] args)   ">>Main.java
+echo "    {                                         ">>Main.java
+echo "        System.out.println(\"Hello World!\");  ">>Main.java
+echo "    }                                         ">>Main.java
+echo "}                                             ">>Main.java
+echo "// end Java                                   ">>Main.java
+
+cd ~/$4/$1
+
+# Tell everyone we are done 
+echo "  maven project generation complete .... "
