@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Creates basic Kotlin project
+
+# Checks for correct number of arguments
+# And checks that folder for project exists
+# Exits if either is not true
+if [[ $# -lt 2 ]] || [[ ! -d ~/$2 ]]; then
+    echo "Usage: "
+    echo "   create-kotlin-project projectName projectParentFolder"
+    echo "   Exiting .... "
+    exit 1
+fi
+
+# Create project folder in arg location
+mkdir ~/$2/$1
+
+# cd into project location
+cd ~/$2/$1
+
+# Create simple kotlin project structure
+mkdir main
+mkdir test
+
+# cd into main
+cd main
+
+# Write Main.kt
+echo "//Basic Kotlin program" >> Main.kt
+echo "fun main()" >> Main.kt
+echo "{" >> Main.kt
+echo "     println(\"Hello World from Kotlin!\")" >> Main.kt
+echo "}" >> Main.kt
+
+# cd back to project root
+cd ..
+
+
+# Write compile script
+echo "#!/bin/bash" >> KotlinCompile
+echo "kotlinc main/Main.kt -include-runtime -d target/"$1".jar" >> KotlinCompile
+
+# Make compile script executable
+chmod +x KotlinCompile
+
+# Finish
+echo "Kotlin project ready at "$2"/"$1
+echo "Compile/build from project root with ./KotlinCompile"

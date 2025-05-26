@@ -13,4 +13,11 @@ Use at your own risk.
 
 I added a new feature.  It is `create-maven-project`.  It harnesses Maven's archetype:generate feature to start up a new Java project in a folder of your choice.  It will also produce an executable `jar` file out of the box.  Just build with `mvn clean compile assembly:single`.
 
+### kotlin project generation
+
+I was going to do this with maven, but I don't understand kotlin/maven well yet.  This works much simpler.  It uses `kotlinc` with switches to build to a `jar` file in the `target` folder.  It is `create-kotlin-project`.  Copy it to your `/home/username/bin` folder and make sure that is on your path.
+
+There is a build script `KotlinCompile` in the project root folder that will compile and build the `jar` file.
+
+
 ### may be maintained from time to time, but maybe not.
