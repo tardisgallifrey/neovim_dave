@@ -38,7 +38,7 @@ cd ..
 
 # Write compile script
 echo "#!/bin/bash" >> KotlinCompile
-echo "kotlinc main/Main.kt -include-runtime -d target/"$1".jar" >> KotlinCompile
+echo "kotlinc main/*.kt -include-runtime -d target/"$1".jar" >> KotlinCompile
 
 # Make compile script executable
 chmod +x KotlinCompile
