@@ -1,0 +1,68 @@
+#!/bin/bash
+
+if [[ $# < 2 ]]; then
+    echo "Incorrect number of arguments"
+    echo "Usage:"
+    echo "    create-CXX-project projectName projectFolderLocation"
+    exit
+fi
+
+
+## -- create-CXX-project
+
+echo "Writing main.c file to $2/$1 "
+
+if [[ -d ~/$2 ]]; then
+    mkdir ~/$2/$1
+    cd ~/$2/$1
+    echo "#include <stdio.h>" >> main.c
+    echo " " >> main.c
+    echo "int main(int argc, char* argv[])" >> main.c
+    echo "{" >> main.c
+    echo "    printf(\"Hello World!\\n\");" >> main.c
+    echo "    return 0;" >> main.c
+    echo "}" >> main.c
+else
+    echo "Something wrong.  Project folder does not exist."
+    exit
+fi
+
+## -- writing CMakeLists.txt 
+cd ~/$2/$1
+
+echo "creating build folder"
+mkdir build
+
+echo "Writing CMakeLists.txt file"
+echo "cmake_minimum_required(VERSION 3.25 )" >> CMakeLists.txt
+echo "project("$1" C)" >> CMakeLists.txt
+echo "" >> CMakeLists.txt
+echo "set(CMAKE_C_STANDARD 11)" >> CMakeLists.txt
+echo "" >> CMakeLists.txt
+echo "add_executable("$1" main.c)" >> CMakeLists.txt
+
+## -- writng clean script
+echo "#!/bin/bash" >> clean
+echo " " >> clean
+echo "rm -rf build" >> clean
+echo "mkdir build" >> clean
+
+chmod +x clean
+
+## -- writing build script
+echo "#!/bin/bash" >> compile
+echo "cd build" >> compile
+echo " " >> compile
+echo "    cmake .." >> compile
+echo " " >> compile
+echo "if [[ -f \"Makefile\" ]]; then" >> compile
+echo "    make" >> compile
+echo "else" >> compile
+echo "    echo \"Makefile does not exist\"" >> compile
+echo "    exit" >> compile
+echo "fi" >> compile
+
+chmod +x compile
+
+echo "CXX Project complete at: "~/$2/$1
+

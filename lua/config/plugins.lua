@@ -99,6 +99,27 @@ require("lazy").setup({
             require("mason").setup({})
         end,
     },
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        lazy = false,
+        config = function()
+            require("nvim-tree").setup({
+                sort = {
+                    sorter = "case_sensitive",
+                },
+                view = {
+                    width = 30,
+                },
+                renderer = {
+                    group_empty = true,
+                },
+                filters = {
+                    dotfiles = true,
+                },
+            })
+        end,
+    },
     -- install mason-lspconfig to set up lspconfig
     {
         "williamboman/mason-lspconfig",
