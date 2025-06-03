@@ -8,6 +8,9 @@
 if [[ $# -lt 2 ]] || [[ ! -d ~/$2 ]]; then
     echo "Usage: "
     echo "   create-kotlin-project projectName projectParentFolder"
+    echo "--OR--"
+    echo "   create-kotlin-project projectName ."
+    echo "--for kotlin project in /home/username/"
     echo "   Exiting .... "
     exit 1
 fi

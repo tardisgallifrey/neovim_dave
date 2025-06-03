@@ -17,6 +17,7 @@ if ! [ -d "$4" ]; then
     echo "Usage: "
     echo "If a folder is in the fourth position, "
     echo "it must be a folder name that exists,  "
+    echo "Project will be created in user's home folder."
 fi
 
 

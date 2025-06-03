@@ -1,34 +1,49 @@
 #!/bin/bash
 
+
 if [[ $# < 2 ]]; then
     echo "Incorrect number of arguments"
     echo "Usage:"
     echo "    create-CXX-project projectName projectFolderLocation"
+    echo "--OR--"
+    echo "    create-CXX-project projectName ."
+    echo "-- for a project in current folder"
     exit
 fi
 
 
 ## -- create-CXX-project
 
-echo "Writing main.c file to $2/$1 "
+## -- this is what is needed to make
+## -- appropriate folder names for either
+## -- user home extended foler
+## -- or current folder
+## -- DOT has to be tested first because
+## -- DOT is a legal folder for bash -d
 
-if [[ -d ~/$2 ]]; then
-    mkdir ~/$2/$1
-    cd ~/$2/$1
-    echo "#include <stdio.h>" >> main.c
-    echo " " >> main.c
-    echo "int main(int argc, char* argv[])" >> main.c
-    echo "{" >> main.c
-    echo "    printf(\"Hello World!\\n\");" >> main.c
-    echo "    return 0;" >> main.c
-    echo "}" >> main.c
+if [[ $2 == "." ]]; then
+    myhome=$PWD/$1
+elif [[ -d /home/$USER/$2 ]]; then
+    myhome=/home/$USER/$2/$1
 else
-    echo "Something wrong.  Project folder does not exist."
+    echo "Something went wrong.  Exiting."
     exit
 fi
 
+
+## -- writing main.c
+echo "Writing project to current folder"
+mkdir $myhome
+cd $myhome
+echo "Writing main.c"
+echo "#include <stdio.h>" >> main.c
+echo " " >> main.c
+echo "int main(int argc, char* argv[])" >> main.c
+echo "{" >> main.c
+echo "    printf(\"Hello World!\\n\");" >> main.c
+echo "    return 0;" >> main.c
+echo "}" >> main.c
 ## -- writing CMakeLists.txt 
-cd ~/$2/$1
 
 echo "creating build folder"
 mkdir build
@@ -64,5 +79,5 @@ echo "fi" >> compile
 
 chmod +x compile
 
-echo "CXX Project complete at: "~/$2/$1
+echo "CXX Project complete"
 
