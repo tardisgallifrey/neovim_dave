@@ -50,7 +50,7 @@ require("lazy").setup({
         -- install table.  Ensures that install 
         -- above finishes before doing the switch
         config = function()
-            vim.cmd.colorscheme("onedark")
+             vim.cmd.colorscheme("onedark")
         end,
 
     },
