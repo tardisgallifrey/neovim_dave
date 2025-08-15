@@ -4,7 +4,7 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 -- if lazy folders/files does not exist, install lazy
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", 
+  local out = vim.fn.system({ "git",
                                 "clone",
                                 "--filter=blob:none",
                                 "--branch=stable",
@@ -171,7 +171,28 @@ require("lazy").setup({
       },
       opts_extend = { "sources.default" }
     },
-    -- lazy dev to fix some things.
+    -- Nvim tree web icons plugin
+    { "nvim-tree/nvim-web-devicons", opts = {} },
+    {
+      "christoomey/vim-tmux-navigator",
+      lazy = false,
+      cmd = {
+        "TmuxNavigateLeft",
+        "TmuxNavigateDown",
+        "TmuxNavigateUp",
+        "TmuxNavigateRight",
+        "TmuxNavigatePrevious",
+        "TmuxNavigatorProcessList",
+      },
+      keys = {
+        { "<C-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+        { "<C-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+        { "<C-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+        { "<C-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+        { "<C-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+      },
+    },
+        -- lazy dev to fix some things.
     {
         "folke/lazydev.nvim",
         ft = "lua", -- only load on lua files
